@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>関西探訪日記</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* ヘッダー */
+        header {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        header p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* ナビゲーション */
+        nav {
+            display: flex;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        nav button {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        nav button.primary {
+            background: #2d5a27;
+            color: white;
+        }
+
+        nav button.primary:hover {
+            background: #234a1f;
+        }
+
+        nav button.secondary {
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        nav button.secondary:hover {
+            background: #f0f0f0;
+        }
+
+        /* 画面切り替え */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* カード */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: #2d5a27;
+        }
+
+        /* フォーム */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4a7c43;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* ボタン */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #2d5a27;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #234a1f;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* 一覧 */
+        .trip-list {
+            list-style: none;
+        }
+
+        .trip-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .trip-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .trip-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .trip-item-destination {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d5a27;
+        }
+
+        .trip-item-date {
+            font-size: 0.8rem;
+            color: #888;
+            background: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .trip-item-meta {
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        .trip-item-status {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        .status-planned {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-visited {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        /* 写真プレビュー */
+        .photo-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .photo-input-wrapper {
+            position: relative;
+        }
+
+        .photo-input-wrapper input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .photo-input-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .photo-input-btn:hover {
+            border-color: #4a7c43;
+            color: #4a7c43;
+        }
+
+        /* 詳細画面の写真 */
+        .detail-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .detail-photos img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* 空の状態 */
+        .empty-state {
+            text-align: center;
+            padding: 48px 16px;
+            color: #888;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        /* ボタングループ */
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        /* 詳細情報 */
+        .detail-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .detail-info-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .detail-info-item label {
+            font-size: 0.75rem;
+            color: #888;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .detail-info-item span {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* 感想 */
+        .detail-impression {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            white-space: pre-wrap;
+        }
+
+        /* 所要時間ボタン */
+        .time-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .time-option {
+            padding: 20px 16px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .time-option:hover {
+            border-color: #4a7c43;
+            background: #f8fff8;
+        }
+
+        .time-option-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d5a27;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .time-option-desc {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* おすすめカード */
+        .suggest-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .suggest-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .suggest-item:hover {
+            border-color: #4a7c43;
+            transform: translateY(-2px);
+        }
+
+        .suggest-item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d5a27;
+            margin-bottom: 4px;
+        }
+
+        .suggest-item-area {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .suggest-item-desc {
+            font-size: 0.875rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .suggest-item-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .suggest-tag {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            background: #e8f5e9;
+            color: #2d5a27;
+            border-radius: 4px;
+        }
+
+        .shuffle-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 16px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .shuffle-btn:hover {
+            background: #e9ecef;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.25rem;
+            }
+
+            .detail-info {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .time-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>関西探訪日記</h1>
+        <p>2週間に1回の日帰り旅行を記録</p>
+    </header>
+
+    <div class="container">
+        <!-- 一覧画面 -->
+        <div id="list-screen" class="screen active">
+            <nav>
+                <button class="primary" onclick="showScreen('suggest')">おすすめを探す</button>
+                <button class="secondary" onclick="showScreen('create')">自分で作成</button>
+            </nav>
+
+            <div id="trip-list-container">
+                <ul class="trip-list" id="trip-list"></ul>
+            </div>
+        </div>
+
+        <!-- おすすめ提案画面 -->
+        <div id="suggest-screen" class="screen">
+            <div class="card">
+                <h2>どれくらいの時間がありますか？</h2>
+                <p style="font-size: 0.875rem; color: #666; margin-bottom: 16px;">移動時間も含めた総所要時間で選んでください（枚方市から）</p>
+                <div class="time-options">
+                    <div class="time-option" onclick="showSuggestions('2h')">
+                        <span class="time-option-label">〜2時間</span>
+                        <span class="time-option-desc">近場でさくっと</span>
+                    </div>
+                    <div class="time-option" onclick="showSuggestions('3h')">
+                        <span class="time-option-label">2〜3時間</span>
+                        <span class="time-option-desc">ちょっとお出かけ</span>
+                    </div>
+                    <div class="time-option" onclick="showSuggestions('4h')">
+                        <span class="time-option-label">3〜4時間</span>
+                        <span class="time-option-desc">しっかり散策</span>
+                    </div>
+                    <div class="time-option" onclick="showSuggestions('half')">
+                        <span class="time-option-label">半日コース</span>
+                        <span class="time-option-desc">午前or午後まるごと</span>
+                    </div>
+                </div>
+                <div class="filter-option" style="margin-top: 16px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px; background: #fff8e1; border-radius: 8px; border: 1px solid #ffe082;">
+                        <input type="checkbox" id="prefer-hidden-gems" style="width: 18px; height: 18px; cursor: pointer;">
+                        <span style="font-size: 0.95rem; color: #f57c00; font-weight: 500;">穴場スポットを優先する</span>
+                    </label>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="showScreen('list')">戻る</button>
+                    <button class="btn btn-secondary" onclick="showScreen('add-spot')">+ スポットを追加</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- スポット追加画面 -->
+        <div id="add-spot-screen" class="screen">
+            <div class="card">
+                <h2>おすすめスポットを追加</h2>
+                <p style="font-size: 0.875rem; color: #666; margin-bottom: 16px;">見つけた良い場所を登録しましょう</p>
+                <form id="add-spot-form">
+                    <div class="form-group">
+                        <label for="spot-name">スポット名</label>
+                        <input type="text" id="spot-name" placeholder="例：〇〇神社、△△山など" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="spot-area">エリア</label>
+                        <input type="text" id="spot-area" placeholder="例：奈良市、箕面市など" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="spot-time">総所要時間の目安（移動+滞在）</label>
+                        <select id="spot-time" required>
+                            <option value="2h">〜2時間</option>
+                            <option value="3h">2〜3時間</option>
+                            <option value="4h">3〜4時間</option>
+                            <option value="half">半日（4〜5時間）</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="spot-purpose">カテゴリ</label>
+                        <select id="spot-purpose" required>
+                            <option value="神社・お寺巡り">神社・お寺</option>
+                            <option value="歴史散策">歴史散策</option>
+                            <option value="ハイキング">ハイキング</option>
+                            <option value="街歩き">街歩き</option>
+                            <option value="博物館・資料館">博物館・資料館</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="spot-desc">説明（任意）</label>
+                        <textarea id="spot-desc" placeholder="どんな場所か、おすすめポイントなど" style="min-height: 80px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="spot-tags">タグ（任意、カンマ区切り）</label>
+                        <input type="text" id="spot-tags" placeholder="例：紅葉, 静か, 穴場">
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="showScreen('suggest')">キャンセル</button>
+                        <button type="submit" class="btn btn-primary">追加する</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- おすすめ結果画面 -->
+        <div id="results-screen" class="screen">
+            <div class="card">
+                <h2 id="results-title">おすすめスポット</h2>
+                <div id="suggest-list" class="suggest-list"></div>
+                <div style="display: flex; gap: 8px; margin-top: 16px;">
+                    <button class="shuffle-btn" onclick="shuffleSuggestions()" style="flex: 1; margin-top: 0;">他のおすすめを見る</button>
+                    <button class="shuffle-btn" onclick="showAllSpots()" style="flex: 1; margin-top: 0; background: #e3f2fd; color: #1565c0;">すべて見る</button>
+                </div>
+                <div class="btn-group" style="margin-top: 12px;">
+                    <button class="btn btn-secondary" onclick="showScreen('suggest')">時間を変更</button>
+                    <button class="btn btn-secondary" onclick="showScreen('list')">一覧に戻る</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- スポット一覧画面 -->
+        <div id="all-spots-screen" class="screen">
+            <div class="card">
+                <h2 id="all-spots-title">スポット一覧</h2>
+                <div id="all-spots-list" class="suggest-list"></div>
+                <div class="btn-group" style="margin-top: 16px;">
+                    <button class="btn btn-secondary" onclick="showScreen('results')">戻る</button>
+                    <button class="btn btn-secondary" onclick="showScreen('suggest')">時間を変更</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- プラン作成画面 -->
+        <div id="create-screen" class="screen">
+            <div class="card">
+                <h2>新しいプランを作成</h2>
+                <form id="create-form">
+                    <div class="form-group">
+                        <label for="destination">行き先</label>
+                        <input type="text" id="destination" placeholder="例：奈良公園、比叡山など" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">日付</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transport">交通手段</label>
+                        <select id="transport">
+                            <option value="電車">電車</option>
+                            <option value="バス">バス</option>
+                            <option value="電車+バス">電車+バス</option>
+                            <option value="車">車</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="purpose">目的</label>
+                        <select id="purpose">
+                            <option value="神社・お寺巡り">神社・お寺巡り</option>
+                            <option value="歴史散策">歴史散策</option>
+                            <option value="ハイキング">ハイキング</option>
+                            <option value="街歩き">街歩き</option>
+                            <option value="博物館・資料館">博物館・資料館</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">予算（円）</label>
+                        <input type="number" id="budget" placeholder="例：3000" min="0">
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="showScreen('list')">キャンセル</button>
+                        <button type="submit" class="btn btn-primary">プランを保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 詳細・編集画面 -->
+        <div id="detail-screen" class="screen">
+            <div class="card">
+                <h2 id="detail-title">詳細</h2>
+
+                <div class="detail-info" id="detail-info"></div>
+
+                <div id="detail-photos-section" style="background: linear-gradient(135deg, #e8f5e9 0%, #fff8e1 100%); padding: 16px; border-radius: 12px; margin-top: 16px;">
+                    <h3 style="font-size: 1rem; margin-bottom: 12px; color: #2d5a27; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 1.2rem;">📷</span> 思い出の写真
+                    </h3>
+                    <div class="detail-photos" id="detail-photos"></div>
+                    <div class="photo-input-wrapper">
+                        <input type="file" id="photo-input" accept="image/*" multiple onchange="handlePhotoUpload(event)">
+                        <div class="photo-input-btn" style="background: white;">
+                            <span>+ 写真を追加</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin: 20px -20px 0; padding: 20px; background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%); border-radius: 0;">
+                    <h3 style="font-size: 1rem; margin-bottom: 12px; color: #1565c0; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 1.2rem;">✏️</span> 旅の記録
+                    </h3>
+                    <textarea id="detail-impression" placeholder="今日の発見、印象に残ったこと、また行きたいポイントなど..." style="min-height: 180px; background: white; width: 100%; box-sizing: border-box; font-size: 1rem; line-height: 1.8;"></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="showScreen('list')">戻る</button>
+                    <button class="btn btn-primary" onclick="saveRecord()">記録を保存</button>
+                </div>
+
+                <div style="margin-top: 16px; text-align: center;">
+                    <button class="btn btn-danger" onclick="deleteTrip()" style="width: auto; padding: 8px 16px; font-size: 0.875rem;">このプランを削除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // データ管理
+        let trips = [];
+        let userSpots = [];
+        let currentTripId = null;
+        let currentTimeCategory = null;
+        let currentSuggestions = [];
+
+        // おすすめスポットデータ（枚方市からの総所要時間ベース：移動時間+現地滞在）
+        const spots = [
+            // 〜2時間（近場でさくっと：片道15〜30分 + 滞在1時間程度）
+            { name: "百済寺跡", area: "枚方市", stayTime: "2h", purpose: "歴史散策", desc: "奈良時代に建立された寺院跡。礎石が残り、古代の雰囲気を感じられる。", tags: ["史跡", "古代", "穴場"] },
+            { name: "山田池公園", area: "枚方市", stayTime: "2h", purpose: "街歩き", desc: "広大な池を中心とした公園。四季の花々と水鳥が楽しめる。", tags: ["公園", "自然", "散歩"] },
+            { name: "御殿山神社", area: "枚方市", stayTime: "2h", purpose: "神社・お寺巡り", desc: "桜の名所として地元で愛される神社。春は境内が桜で彩られる。", tags: ["神社", "桜", "穴場"] },
+            { name: "星田妙見宮", area: "交野市", stayTime: "2h", purpose: "神社・お寺巡り", desc: "北極星を祀る神社。隕石が落ちたという伝説が残る神秘的なスポット。", tags: ["神社", "パワースポット", "穴場"] },
+            { name: "機物神社", area: "交野市", stayTime: "2h", purpose: "神社・お寺巡り", desc: "七夕伝説発祥の地。織姫を祀る珍しい神社。七夕祭りが有名。", tags: ["神社", "七夕", "穴場"] },
+            { name: "私市植物園", area: "交野市", stayTime: "2h", purpose: "街歩き", desc: "大阪市立大学の植物園。珍しい植物が多く、静かに自然を楽しめる。", tags: ["植物園", "自然", "穴場"] },
+            { name: "四條畷神社", area: "四條畷市", stayTime: "2h", purpose: "神社・お寺巡り", desc: "楠木正行を祀る神社。飯盛山への登山口にもなっている。", tags: ["神社", "歴史", "穴場"] },
+            { name: "成田山不動尊", area: "寝屋川市", stayTime: "2h", purpose: "神社・お寺巡り", desc: "交通安全祈願で有名。境内は広く、静かに参拝できる。", tags: ["寺院", "交通安全"] },
+
+            // 2〜3時間（ちょっとお出かけ：片道30分〜45分 + 滞在1〜1.5時間）
+            { name: "交野山", area: "交野市", stayTime: "3h", purpose: "ハイキング", desc: "標高341m。山頂の観音岩からは大阪平野を一望できる。初心者向けの低山ハイキング。", tags: ["低山", "展望", "自然"] },
+            { name: "くろんど園地", area: "交野市", stayTime: "3h", purpose: "ハイキング", desc: "四季折々の自然が楽しめる府民の森。ハイキングコースが整備されている。", tags: ["自然", "森林浴", "ハイキング"] },
+            { name: "磐船神社", area: "交野市", stayTime: "3h", purpose: "神社・お寺巡り", desc: "巨岩を御神体とする古社。岩窟めぐりは探検気分で楽しい。要予約。", tags: ["神社", "岩窟", "穴場"] },
+            { name: "石切劔箭神社", area: "東大阪市", stayTime: "3h", purpose: "神社・お寺巡り", desc: "「石切さん」の愛称で親しまれる。参道の商店街も昭和レトロで楽しい。", tags: ["神社", "商店街", "レトロ"] },
+            { name: "飯盛城跡", area: "四條畷市", stayTime: "3h", purpose: "ハイキング", desc: "戦国時代の山城跡。標高314mで、山頂からの眺めが良い。", tags: ["城跡", "低山", "穴場"] },
+            { name: "枚岡神社と神津嶽", area: "東大阪市", stayTime: "3h", purpose: "ハイキング", desc: "河内国一之宮から神津嶽への軽登山。参拝後にハイキングも可能。", tags: ["神社", "一之宮", "ハイキング"] },
+            { name: "野崎観音（慈眼寺）", area: "大東市", stayTime: "3h", purpose: "神社・お寺巡り", desc: "「野崎参り」で有名な古刹。境内からの眺望が良い。5月の縁日は賑やか。", tags: ["寺院", "眺望", "穴場"] },
+            { name: "高槻城跡と今城塚古墳", area: "高槻市", stayTime: "3h", purpose: "歴史散策", desc: "しろあと歴史館と城跡公園を巡る。今城塚古墳は埴輪が並び見応えあり。", tags: ["城跡", "古墳", "穴場"] },
+            { name: "瓢箪山稲荷神社", area: "東大阪市", stayTime: "3h", purpose: "神社・お寺巡り", desc: "日本三大稲荷の一つ。辻占いが有名。参道の商店街も趣がある。", tags: ["神社", "稲荷", "穴場"] },
+
+            // 3〜4時間（しっかり散策：片道45分〜1時間 + 滞在1.5〜2時間）
+            { name: "生駒山上遊園地", area: "生駒市", stayTime: "4h", purpose: "街歩き", desc: "生駒山頂にある遊園地。ケーブルカーでアクセス。眺望が素晴らしい。", tags: ["展望", "レトロ", "ケーブルカー"] },
+            { name: "信貴山朝護孫子寺", area: "平群町", stayTime: "4h", purpose: "神社・お寺巡り", desc: "虎で有名な寺院。境内が広く、見どころが多い。", tags: ["寺院", "パワースポット", "穴場"] },
+            { name: "法隆寺", area: "斑鳩町", stayTime: "4h", purpose: "神社・お寺巡り", desc: "世界最古の木造建築群。飛鳥時代の雰囲気を今に伝える。", tags: ["世界遺産", "飛鳥", "国宝"] },
+            { name: "達磨寺", area: "王寺町", stayTime: "4h", purpose: "神社・お寺巡り", desc: "聖徳太子と達磨大師ゆかりの寺。境内にダルマがたくさん。法隆寺と合わせて巡れる。", tags: ["寺院", "聖徳太子", "穴場"] },
+            { name: "伏見稲荷大社", area: "京都市", stayTime: "4h", purpose: "神社・お寺巡り", desc: "千本鳥居で有名。稲荷山全体が神域で、山頂まで歩くと良い運動に。", tags: ["神社", "鳥居", "山歩き"] },
+            { name: "東福寺", area: "京都市", stayTime: "4h", purpose: "神社・お寺巡り", desc: "紅葉の名所。通天橋からの眺めは絶景。禅寺の静けさを味わえる。", tags: ["寺院", "紅葉", "庭園"] },
+            { name: "醍醐寺", area: "京都市", stayTime: "4h", purpose: "神社・お寺巡り", desc: "豊臣秀吉の花見で有名。広大な境内に国宝多数。上醍醐まで登ると健脚向け。", tags: ["世界遺産", "桜", "国宝"] },
+            { name: "浄瑠璃寺", area: "木津川市", stayTime: "4h", purpose: "神社・お寺巡り", desc: "九体の阿弥陀如来が並ぶ珍しい寺。浄土式庭園が美しい。静かで心が落ち着く。", tags: ["寺院", "国宝", "穴場"] },
+            { name: "岩船寺", area: "木津川市", stayTime: "4h", purpose: "神社・お寺巡り", desc: "「あじさい寺」として有名。三重塔は重要文化財。浄瑠璃寺と合わせて巡れる。", tags: ["寺院", "あじさい", "穴場"] },
+            { name: "大阪城公園", area: "大阪市", stayTime: "4h", purpose: "歴史散策", desc: "大阪のシンボル。天守閣からの眺望と、広大な公園での散策を楽しめる。", tags: ["城", "歴史", "公園"] },
+            { name: "住吉大社", area: "大阪市", stayTime: "4h", purpose: "神社・お寺巡り", desc: "摂津国一之宮。独特の住吉造りの本殿は国宝。太鼓橋も見どころ。", tags: ["神社", "一之宮", "国宝"] },
+            { name: "當麻寺", area: "葛城市", stayTime: "4h", purpose: "神社・お寺巡り", desc: "中将姫伝説で有名な古刹。牡丹の季節が美しい。静かで落ち着いた雰囲気。", tags: ["寺院", "牡丹", "穴場"] },
+            { name: "正暦寺", area: "奈良市", stayTime: "4h", purpose: "神社・お寺巡り", desc: "「錦の里」と呼ばれる紅葉の名所。清酒発祥の地としても知られる。観光客少なめ。", tags: ["寺院", "紅葉", "穴場"] },
+
+            // 半日コース（午前or午後まるごと：片道1時間〜1.5時間 + 滞在2〜3時間）
+            { name: "奈良公園周辺", area: "奈良市", stayTime: "half", purpose: "歴史散策", desc: "鹿と触れ合いながら東大寺、春日大社、興福寺などを巡る。広大で見どころ満載。", tags: ["世界遺産", "鹿", "寺社"] },
+            { name: "宇治", area: "宇治市", stayTime: "half", purpose: "歴史散策", desc: "平等院鳳凰堂や宇治上神社など世界遺産が点在。抹茶スイーツも楽しめる。", tags: ["世界遺産", "歴史", "グルメ"] },
+            { name: "般若寺", area: "奈良市", stayTime: "half", purpose: "神社・お寺巡り", desc: "「コスモス寺」として有名。秋は境内一面にコスモスが咲き誇る。十三重石塔は国宝。", tags: ["寺院", "コスモス", "穴場"] },
+            { name: "箕面の滝", area: "箕面市", stayTime: "half", purpose: "ハイキング", desc: "落差33mの名瀑。滝道は整備され、森林浴を楽しみながら歩ける。", tags: ["滝", "紅葉", "ハイキング"] },
+            { name: "勝尾寺", area: "箕面市", stayTime: "half", purpose: "神社・お寺巡り", desc: "勝運の寺として有名。境内のダルマと紅葉が美しい。", tags: ["寺院", "勝運", "紅葉"] },
+            { name: "室生寺", area: "宇陀市", stayTime: "half", purpose: "神社・お寺巡り", desc: "女人高野として知られる山寺。五重塔は国宝。石楠花の季節が特に美しい。", tags: ["寺院", "国宝", "穴場"] },
+            { name: "長谷寺", area: "桜井市", stayTime: "half", purpose: "神社・お寺巡り", desc: "「花の御寺」と呼ばれる牡丹の名所。399段の登廊は圧巻。", tags: ["寺院", "牡丹", "穴場"] },
+            { name: "當尾の里石仏めぐり", area: "木津川市", stayTime: "half", purpose: "ハイキング", desc: "浄瑠璃寺・岩船寺周辺の石仏を巡るハイキングコース。中世の石仏が点在する。", tags: ["石仏", "ハイキング", "穴場"] },
+            { name: "神戸北野異人館街", area: "神戸市", stayTime: "half", purpose: "街歩き", desc: "明治時代の洋館が立ち並ぶ。異国情緒あふれる街並みを散策。", tags: ["異人館", "洋風建築", "散策"] },
+            { name: "比叡山延暦寺", area: "大津市", stayTime: "half", purpose: "神社・お寺巡り", desc: "天台宗総本山。東塔・西塔・横川の三塔を巡る。ケーブルカーでアクセス可。", tags: ["世界遺産", "寺院", "山岳信仰"] },
+            { name: "談山神社と明日香", area: "桜井市・明日香村", stayTime: "half", purpose: "歴史散策", desc: "大化の改新ゆかりの神社から飛鳥の史跡を巡る。レンタサイクルも便利。", tags: ["神社", "飛鳥", "穴場"] },
+            { name: "山の辺の道", area: "天理市〜桜井市", stayTime: "half", purpose: "ハイキング", desc: "日本最古の道といわれる。石上神宮から大神神社まで古社を巡りながら歩く。", tags: ["古道", "神社", "ハイキング"] },
+            { name: "松尾寺", area: "大和郡山市", stayTime: "half", purpose: "神社・お寺巡り", desc: "日本最古の厄除け霊場。バラ園が美しい。法隆寺から近いが訪れる人は少ない。", tags: ["寺院", "厄除け", "穴場"] },
+            { name: "長浜", area: "長浜市", stayTime: "half", purpose: "街歩き", desc: "黒壁スクエアを中心としたレトロな街並み。ガラス工芸や地元グルメを楽しめる。", tags: ["レトロ", "街歩き", "グルメ"] },
+            { name: "近江八幡", area: "近江八幡市", stayTime: "half", purpose: "街歩き", desc: "水郷と商家の街並み。八幡堀の散策やヴォーリズ建築も見どころ。", tags: ["水郷", "街並み", "穴場"] },
+            { name: "赤目四十八滝", area: "名張市", stayTime: "half", purpose: "ハイキング", desc: "渓谷沿いに続く滝めぐり。往復約3時間のハイキングコース。", tags: ["滝", "渓谷", "ハイキング"] },
+            { name: "葛城古道", area: "御所市", stayTime: "half", purpose: "ハイキング", desc: "古代豪族の本拠地を歩く古道。高鴨神社、一言主神社など歴史ある神社が点在。", tags: ["古道", "神社", "穴場"] }
+        ];
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTrips();
+            loadUserSpots();
+            renderTripList();
+
+            // 今日の日付をデフォルトに
+            document.getElementById('date').valueAsDate = new Date();
+
+            // スポット追加フォームの送信
+            document.getElementById('add-spot-form').addEventListener('submit', handleAddSpot);
+        });
+
+        // LocalStorageからデータを読み込み
+        function loadTrips() {
+            const saved = localStorage.getItem('kansai-tanbo-trips');
+            if (saved) {
+                trips = JSON.parse(saved);
+            }
+        }
+
+        // LocalStorageにデータを保存
+        function saveTrips() {
+            localStorage.setItem('kansai-tanbo-trips', JSON.stringify(trips));
+        }
+
+        // ユーザースポットを読み込み
+        function loadUserSpots() {
+            const saved = localStorage.getItem('kansai-tanbo-user-spots');
+            if (saved) {
+                userSpots = JSON.parse(saved);
+            }
+        }
+
+        // ユーザースポットを保存
+        function saveUserSpots() {
+            localStorage.setItem('kansai-tanbo-user-spots', JSON.stringify(userSpots));
+        }
+
+        // スポット追加処理
+        function handleAddSpot(e) {
+            e.preventDefault();
+
+            const tagsInput = document.getElementById('spot-tags').value;
+            const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+
+            const newSpot = {
+                id: Date.now().toString(),
+                name: document.getElementById('spot-name').value,
+                area: document.getElementById('spot-area').value,
+                stayTime: document.getElementById('spot-time').value,
+                purpose: document.getElementById('spot-purpose').value,
+                desc: document.getElementById('spot-desc').value || '',
+                tags: tags,
+                isUserAdded: true
+            };
+
+            userSpots.push(newSpot);
+            saveUserSpots();
+
+            // フォームをリセット
+            document.getElementById('add-spot-form').reset();
+
+            alert(`「${newSpot.name}」を追加しました`);
+            showScreen('suggest');
+        }
+
+        // 全スポットを取得（固定 + ユーザー追加）
+        function getAllSpots() {
+            return [...spots, ...userSpots];
+        }
+
+        // 画面切り替え
+        function showScreen(screenName) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(`${screenName}-screen`).classList.add('active');
+
+            if (screenName === 'list') {
+                renderTripList();
+                currentTripId = null;
+            }
+        }
+
+        // 一覧を描画
+        function renderTripList() {
+            const container = document.getElementById('trip-list');
+
+            if (trips.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🗺️</div>
+                        <p>まだプランがありません</p>
+                        <p style="font-size: 0.875rem; margin-top: 8px;">「新しいプランを作成」から始めましょう</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // 日付で降順ソート
+            const sortedTrips = [...trips].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            container.innerHTML = sortedTrips.map(trip => `
+                <li class="trip-item" onclick="showDetail('${trip.id}')">
+                    <div class="trip-item-header">
+                        <span class="trip-item-destination">${trip.destination}</span>
+                        <span class="trip-item-date">${formatDate(trip.date)}</span>
+                    </div>
+                    <div class="trip-item-meta">
+                        ${trip.purpose} / ${trip.transport}
+                        ${trip.budget ? ` / 予算 ${Number(trip.budget).toLocaleString()}円` : ''}
+                    </div>
+                    <span class="trip-item-status ${trip.impression || (trip.photos && trip.photos.length > 0) ? 'status-visited' : 'status-planned'}">
+                        ${trip.impression || (trip.photos && trip.photos.length > 0) ? '訪問済み' : '予定'}
+                    </span>
+                </li>
+            `).join('');
+        }
+
+        // 日付フォーマット
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+            const weekday = weekdays[date.getDay()];
+            return `${year}/${month}/${day}（${weekday}）`;
+        }
+
+        // プラン作成フォームの送信
+        document.getElementById('create-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const newTrip = {
+                id: Date.now().toString(),
+                destination: document.getElementById('destination').value,
+                date: document.getElementById('date').value,
+                transport: document.getElementById('transport').value,
+                purpose: document.getElementById('purpose').value,
+                budget: document.getElementById('budget').value,
+                photos: [],
+                impression: ''
+            };
+
+            trips.push(newTrip);
+            saveTrips();
+
+            // フォームをリセット
+            document.getElementById('create-form').reset();
+            document.getElementById('date').valueAsDate = new Date();
+
+            showScreen('list');
+        });
+
+        // 詳細画面を表示
+        function showDetail(tripId) {
+            currentTripId = tripId;
+            const trip = trips.find(t => t.id === tripId);
+
+            if (!trip) return;
+
+            document.getElementById('detail-title').textContent = trip.destination;
+
+            // 詳細情報
+            document.getElementById('detail-info').innerHTML = `
+                <div class="detail-info-item">
+                    <label>日付</label>
+                    <span>${formatDate(trip.date)}</span>
+                </div>
+                <div class="detail-info-item">
+                    <label>交通手段</label>
+                    <span>${trip.transport}</span>
+                </div>
+                <div class="detail-info-item">
+                    <label>目的</label>
+                    <span>${trip.purpose}</span>
+                </div>
+                <div class="detail-info-item">
+                    <label>予算</label>
+                    <span>${trip.budget ? Number(trip.budget).toLocaleString() + '円' : '未設定'}</span>
+                </div>
+            `;
+
+            // 写真
+            const photosContainer = document.getElementById('detail-photos');
+            if (trip.photos && trip.photos.length > 0) {
+                photosContainer.innerHTML = trip.photos.map((photo, index) => `
+                    <img src="${photo}" alt="写真${index + 1}" onclick="viewPhoto('${photo}')">
+                `).join('');
+            } else {
+                photosContainer.innerHTML = '<p style="color: #888; font-size: 0.875rem;">まだ写真がありません</p>';
+            }
+
+            // 感想
+            document.getElementById('detail-impression').value = trip.impression || '';
+
+            showScreen('detail');
+        }
+
+        // 写真アップロード
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            const trip = trips.find(t => t.id === currentTripId);
+            if (!trip) return;
+
+            if (!trip.photos) trip.photos = [];
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    trip.photos.push(e.target.result);
+                    saveTrips();
+
+                    // 写真表示を更新
+                    const photosContainer = document.getElementById('detail-photos');
+                    photosContainer.innerHTML = trip.photos.map((photo, index) => `
+                        <img src="${photo}" alt="写真${index + 1}" onclick="viewPhoto('${photo}')">
+                    `).join('');
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // ファイル入力をリセット
+            event.target.value = '';
+        }
+
+        // 写真を拡大表示（シンプル実装）
+        function viewPhoto(src) {
+            window.open(src, '_blank');
+        }
+
+        // 記録を保存
+        function saveRecord() {
+            const trip = trips.find(t => t.id === currentTripId);
+            if (!trip) return;
+
+            trip.impression = document.getElementById('detail-impression').value;
+            saveTrips();
+
+            alert('記録を保存しました');
+            showScreen('list');
+        }
+
+        // プランを削除
+        function deleteTrip() {
+            if (!confirm('このプランを削除しますか？')) return;
+
+            trips = trips.filter(t => t.id !== currentTripId);
+            saveTrips();
+            showScreen('list');
+        }
+
+        // おすすめ機能
+        let preferHiddenGems = false;
+
+        function showSuggestions(timeCategory) {
+            currentTimeCategory = timeCategory;
+            preferHiddenGems = document.getElementById('prefer-hidden-gems').checked;
+
+            const timeLabels = {
+                '2h': '〜2時間',
+                '3h': '2〜3時間',
+                '4h': '3〜4時間',
+                'half': '半日コース'
+            };
+
+            const titleSuffix = preferHiddenGems ? '（穴場優先）' : '';
+            document.getElementById('results-title').textContent = `おすすめスポット（${timeLabels[timeCategory]}）${titleSuffix}`;
+
+            // 該当するスポットをフィルタリング（固定 + ユーザー追加）
+            let filteredSpots = getAllSpots().filter(s => s.stayTime === timeCategory);
+
+            // 穴場優先の場合、穴場タグ付きを先頭に
+            if (preferHiddenGems) {
+                const hiddenGems = filteredSpots.filter(s => s.tags && s.tags.includes('穴場'));
+                const others = filteredSpots.filter(s => !s.tags || !s.tags.includes('穴場'));
+                filteredSpots = [...shuffleArray(hiddenGems), ...shuffleArray(others)];
+                currentSuggestions = filteredSpots;
+            } else {
+                currentSuggestions = shuffleArray(filteredSpots);
+            }
+
+            renderSuggestions();
+            showScreen('results');
+        }
+
+        function shuffleSuggestions() {
+            let filteredSpots = getAllSpots().filter(s => s.stayTime === currentTimeCategory);
+
+            if (preferHiddenGems) {
+                const hiddenGems = filteredSpots.filter(s => s.tags && s.tags.includes('穴場'));
+                const others = filteredSpots.filter(s => !s.tags || !s.tags.includes('穴場'));
+                filteredSpots = [...shuffleArray(hiddenGems), ...shuffleArray(others)];
+                currentSuggestions = filteredSpots;
+            } else {
+                currentSuggestions = shuffleArray(filteredSpots);
+            }
+
+            renderSuggestions();
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // スポットが訪問済みかチェック
+        function isVisited(spotName) {
+            return trips.some(trip =>
+                trip.destination === spotName &&
+                (trip.impression || (trip.photos && trip.photos.length > 0))
+            );
+        }
+
+        function renderSuggestions() {
+            const container = document.getElementById('suggest-list');
+            const displaySpots = currentSuggestions.slice(0, 3);
+
+            container.innerHTML = displaySpots.map(spot => {
+                const isHiddenGem = spot.tags && spot.tags.includes('穴場');
+                const displayTags = spot.tags ? spot.tags.filter(t => t !== '穴場') : [];
+                const visited = isVisited(spot.name);
+
+                return `
+                <div class="suggest-item" onclick="selectSpot('${spot.name}', '${spot.purpose}')" ${isHiddenGem ? 'style="border: 2px solid #f57c00; background: #fff8e1;"' : ''}>
+                    <div class="suggest-item-name">
+                        ${visited ? '<span style="font-size: 0.7rem; background: #4caf50; color: white; padding: 2px 8px; border-radius: 4px; margin-right: 8px;">訪問済</span>' : ''}
+                        ${isHiddenGem && !visited ? '<span style="font-size: 0.7rem; background: #f57c00; color: white; padding: 2px 8px; border-radius: 4px; margin-right: 8px;">穴場</span>' : ''}
+                        ${spot.name}
+                        ${spot.isUserAdded ? '<span style="font-size: 0.7rem; background: #fff3cd; color: #856404; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">自分で追加</span>' : ''}
+                    </div>
+                    <div class="suggest-item-area">${spot.area}</div>
+                    <div class="suggest-item-desc">${spot.desc || '説明なし'}</div>
+                    <div class="suggest-item-tags">
+                        ${displayTags.length > 0 ? displayTags.map(tag => `<span class="suggest-tag">${tag}</span>`).join('') : ''}
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function selectSpot(name, purpose) {
+            // プラン作成画面に移動して、行き先と目的を自動入力
+            document.getElementById('destination').value = name;
+            document.getElementById('purpose').value = purpose;
+            document.getElementById('date').valueAsDate = new Date();
+
+            showScreen('create');
+        }
+
+        // すべてのスポットを表示
+        function showAllSpots() {
+            const timeLabels = {
+                '2h': '〜2時間',
+                '3h': '2〜3時間',
+                '4h': '3〜4時間',
+                'half': '半日コース'
+            };
+
+            document.getElementById('all-spots-title').textContent = `スポット一覧（${timeLabels[currentTimeCategory]}）`;
+
+            const allSpots = getAllSpots().filter(s => s.stayTime === currentTimeCategory);
+            const container = document.getElementById('all-spots-list');
+
+            container.innerHTML = allSpots.map(spot => {
+                const isHiddenGem = spot.tags && spot.tags.includes('穴場');
+                const displayTags = spot.tags ? spot.tags.filter(t => t !== '穴場') : [];
+                const visited = isVisited(spot.name);
+
+                return `
+                <div class="suggest-item" onclick="selectSpot('${spot.name}', '${spot.purpose}')" ${isHiddenGem ? 'style="border: 2px solid #f57c00; background: #fff8e1;"' : ''}>
+                    <div class="suggest-item-name">
+                        ${visited ? '<span style="font-size: 0.7rem; background: #4caf50; color: white; padding: 2px 8px; border-radius: 4px; margin-right: 8px;">訪問済</span>' : ''}
+                        ${isHiddenGem && !visited ? '<span style="font-size: 0.7rem; background: #f57c00; color: white; padding: 2px 8px; border-radius: 4px; margin-right: 8px;">穴場</span>' : ''}
+                        ${spot.name}
+                        ${spot.isUserAdded ? '<span style="font-size: 0.7rem; background: #fff3cd; color: #856404; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">自分で追加</span>' : ''}
+                    </div>
+                    <div class="suggest-item-area">${spot.area}</div>
+                    <div class="suggest-item-desc">${spot.desc || '説明なし'}</div>
+                    <div class="suggest-item-tags">
+                        ${displayTags.length > 0 ? displayTags.map(tag => `<span class="suggest-tag">${tag}</span>`).join('') : ''}
+                    </div>
+                </div>
+            `}).join('');
+
+            showScreen('all-spots');
+        }
+    </script>
+</body>
+</html>

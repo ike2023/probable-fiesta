@@ -2,7 +2,10 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2d5a27">
     <title>関西探訪日記</title>
     <style>
         * {
@@ -472,14 +475,144 @@
             background: #e9ecef;
         }
 
-        /* レスポンシブ */
+        /* ソートボタン */
+        .sort-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sort-btn:hover {
+            background: #e9ecef;
+        }
+
+        .sort-btn.active {
+            background: #2d5a27;
+            color: white;
+            border-color: #2d5a27;
+        }
+
+        /* レスポンシブ - タブレット */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+
+            header {
+                padding: 16px 12px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .detail-photos {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .detail-photos img {
+                height: 120px;
+            }
+        }
+
+        /* レスポンシブ - 大きめスマホ */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.35rem;
+            }
+
+            header p {
+                font-size: 0.8rem;
+            }
+
+            nav {
+                gap: 6px;
+            }
+
+            nav button {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+
+            .card h2 {
+                font-size: 1rem;
+            }
+
+            .trip-item-destination {
+                font-size: 1rem;
+            }
+
+            .suggest-item-name {
+                font-size: 1rem;
+            }
+
+            .time-option {
+                padding: 16px 12px;
+            }
+
+            .time-option-label {
+                font-size: 1rem;
+            }
+        }
+
+        /* レスポンシブ - スマホ */
         @media (max-width: 480px) {
             header h1 {
-                font-size: 1.25rem;
+                font-size: 1.2rem;
+            }
+
+            header p {
+                font-size: 0.75rem;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            nav button {
+                flex: 1 1 45%;
+                padding: 10px 8px;
+                font-size: 0.8rem;
+            }
+
+            .card {
+                padding: 14px;
+                border-radius: 10px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px;
+                font-size: 16px; /* iOSズーム防止 */
+            }
+
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.95rem;
             }
 
             .detail-info {
                 grid-template-columns: 1fr;
+            }
+
+            .detail-photos {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 8px;
+            }
+
+            .detail-photos img {
+                height: 100px;
             }
 
             .btn-group {
@@ -488,6 +621,117 @@
 
             .time-options {
                 grid-template-columns: 1fr;
+            }
+
+            .trip-item {
+                padding: 14px;
+            }
+
+            .trip-item-header {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .trip-item-date {
+                align-self: flex-start;
+            }
+
+            .suggest-item {
+                padding: 14px;
+            }
+
+            .empty-state {
+                padding: 32px 12px;
+            }
+
+            .empty-state-icon {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* レスポンシブ - 小さいスマホ */
+        @media (max-width: 360px) {
+            header h1 {
+                font-size: 1.1rem;
+            }
+
+            nav button {
+                flex: 1 1 100%;
+                padding: 10px;
+            }
+
+            .card {
+                padding: 12px;
+            }
+
+            .photo-preview {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+
+            .photo-preview img {
+                height: 80px;
+            }
+
+            .detail-photos {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .time-option {
+                padding: 14px 10px;
+            }
+
+            .time-option-label {
+                font-size: 0.95rem;
+            }
+
+            .time-option-desc {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* iOS Safe Area対応（ノッチ付きiPhone） */
+        @supports (padding: env(safe-area-inset-top)) {
+            header {
+                padding-top: calc(20px + env(safe-area-inset-top));
+                padding-left: calc(16px + env(safe-area-inset-left));
+                padding-right: calc(16px + env(safe-area-inset-right));
+            }
+
+            .container {
+                padding-left: calc(16px + env(safe-area-inset-left));
+                padding-right: calc(16px + env(safe-area-inset-right));
+                padding-bottom: calc(16px + env(safe-area-inset-bottom));
+            }
+        }
+
+        /* タッチデバイス向け最適化 */
+        @media (hover: none) and (pointer: coarse) {
+            /* タップ時のハイライト除去 */
+            * {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            /* ホバー効果を無効化（タッチ時の残留防止） */
+            .trip-item:hover,
+            .suggest-item:hover,
+            .time-option:hover {
+                transform: none;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            }
+
+            /* アクティブ時のフィードバック */
+            .trip-item:active,
+            .suggest-item:active,
+            .time-option:active {
+                transform: scale(0.98);
+                opacity: 0.9;
+            }
+
+            nav button:active,
+            .btn:active,
+            .shuffle-btn:active {
+                transform: scale(0.97);
+                opacity: 0.9;
             }
         }
     </style>
@@ -532,6 +776,10 @@
                     <div class="time-option" onclick="showSuggestions('half')">
                         <span class="time-option-label">半日コース</span>
                         <span class="time-option-desc">午前or午後まるごと</span>
+                    </div>
+                    <div class="time-option" onclick="showSuggestions('all')">
+                        <span class="time-option-label">すべて表示</span>
+                        <span class="time-option-desc">全スポット一覧</span>
                     </div>
                 </div>
                 <div class="filter-option" style="margin-top: 16px;">
@@ -616,6 +864,17 @@
         <div id="all-spots-screen" class="screen">
             <div class="card">
                 <h2 id="all-spots-title">スポット一覧</h2>
+                <div style="margin-bottom: 12px;">
+                    <input type="text" id="spot-search" placeholder="スポット名・エリアで検索..."
+                           oninput="filterSpots()"
+                           style="width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+                </div>
+                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <button id="sort-name" class="sort-btn active" onclick="sortSpots('name')">アイウエオ順</button>
+                    <button id="sort-area" class="sort-btn" onclick="sortSpots('area')">エリア順</button>
+                    <button id="sort-time" class="sort-btn" onclick="sortSpots('time')">所要時間順</button>
+                </div>
+                <div id="spot-count" style="font-size: 0.8rem; color: #888; margin-bottom: 8px;"></div>
                 <div id="all-spots-list" class="suggest-list"></div>
                 <div class="btn-group" style="margin-top: 16px;">
                     <button class="btn btn-secondary" onclick="showScreen('results')">戻る</button>
@@ -1040,14 +1299,17 @@
                 '2h': '〜2時間',
                 '3h': '2〜3時間',
                 '4h': '3〜4時間',
-                'half': '半日コース'
+                'half': '半日コース',
+                'all': 'すべて'
             };
 
             const titleSuffix = preferHiddenGems ? '（穴場優先）' : '';
             document.getElementById('results-title').textContent = `おすすめスポット（${timeLabels[timeCategory]}）${titleSuffix}`;
 
             // 該当するスポットをフィルタリング（固定 + ユーザー追加）
-            let filteredSpots = getAllSpots().filter(s => s.stayTime === timeCategory);
+            let filteredSpots = timeCategory === 'all'
+                ? getAllSpots()
+                : getAllSpots().filter(s => s.stayTime === timeCategory);
 
             // 穴場優先の場合、穴場タグ付きを先頭に
             if (preferHiddenGems) {
@@ -1064,7 +1326,9 @@
         }
 
         function shuffleSuggestions() {
-            let filteredSpots = getAllSpots().filter(s => s.stayTime === currentTimeCategory);
+            let filteredSpots = currentTimeCategory === 'all'
+                ? getAllSpots()
+                : getAllSpots().filter(s => s.stayTime === currentTimeCategory);
 
             if (preferHiddenGems) {
                 const hiddenGems = filteredSpots.filter(s => s.tags && s.tags.includes('穴場'));
@@ -1131,25 +1395,117 @@
         }
 
         // すべてのスポットを表示
+        let currentSortOrder = 'name';
+        let allSpotsCache = [];
+
         function showAllSpots() {
             const timeLabels = {
                 '2h': '〜2時間',
                 '3h': '2〜3時間',
                 '4h': '3〜4時間',
-                'half': '半日コース'
+                'half': '半日コース',
+                'all': 'すべて'
             };
 
             document.getElementById('all-spots-title').textContent = `スポット一覧（${timeLabels[currentTimeCategory]}）`;
+            document.getElementById('spot-search').value = '';
 
-            const allSpots = getAllSpots().filter(s => s.stayTime === currentTimeCategory);
+            // スポットをキャッシュ
+            allSpotsCache = currentTimeCategory === 'all'
+                ? getAllSpots()
+                : getAllSpots().filter(s => s.stayTime === currentTimeCategory);
+
+            // デフォルトでアイウエオ順
+            currentSortOrder = 'name';
+            updateSortButtons();
+            renderAllSpots(sortSpotsList(allSpotsCache, 'name'));
+
+            showScreen('all-spots');
+        }
+
+        function sortSpots(order) {
+            currentSortOrder = order;
+            updateSortButtons();
+            filterSpots();
+        }
+
+        function updateSortButtons() {
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('sort-' + currentSortOrder).classList.add('active');
+        }
+
+        function sortSpotsList(spots, order) {
+            const sorted = [...spots];
+            const timeOrder = { '2h': 1, '3h': 2, '4h': 3, 'half': 4 };
+
+            switch (order) {
+                case 'name':
+                    sorted.sort((a, b) => a.name.localeCompare(b.name, 'ja'));
+                    break;
+                case 'area':
+                    sorted.sort((a, b) => a.area.localeCompare(b.area, 'ja') || a.name.localeCompare(b.name, 'ja'));
+                    break;
+                case 'time':
+                    sorted.sort((a, b) => (timeOrder[a.stayTime] || 5) - (timeOrder[b.stayTime] || 5) || a.name.localeCompare(b.name, 'ja'));
+                    break;
+            }
+            return sorted;
+        }
+
+        function filterSpots() {
+            const query = document.getElementById('spot-search').value.toLowerCase();
+            let filtered = allSpotsCache;
+
+            if (query) {
+                filtered = allSpotsCache.filter(spot =>
+                    spot.name.toLowerCase().includes(query) ||
+                    spot.area.toLowerCase().includes(query) ||
+                    (spot.desc && spot.desc.toLowerCase().includes(query)) ||
+                    (spot.tags && spot.tags.some(tag => tag.toLowerCase().includes(query)))
+                );
+            }
+
+            renderAllSpots(sortSpotsList(filtered, currentSortOrder));
+        }
+
+        function renderAllSpots(spots) {
             const container = document.getElementById('all-spots-list');
+            const countEl = document.getElementById('spot-count');
 
-            container.innerHTML = allSpots.map(spot => {
-                const isHiddenGem = spot.tags && spot.tags.includes('穴場');
-                const displayTags = spot.tags ? spot.tags.filter(t => t !== '穴場') : [];
-                const visited = isVisited(spot.name);
+            countEl.textContent = `${spots.length}件のスポット`;
 
-                return `
+            if (spots.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 24px; color: #888;">該当するスポットがありません</div>';
+                return;
+            }
+
+            const timeLabels = { '2h': '〜2時間', '3h': '2〜3時間', '4h': '3〜4時間', 'half': '半日' };
+
+            // エリア順の場合はグループ化して表示
+            if (currentSortOrder === 'area') {
+                const grouped = {};
+                spots.forEach(spot => {
+                    if (!grouped[spot.area]) grouped[spot.area] = [];
+                    grouped[spot.area].push(spot);
+                });
+
+                container.innerHTML = Object.keys(grouped).map(area => `
+                    <div style="margin-top: 16px;">
+                        <div style="font-weight: 600; color: #2d5a27; padding: 8px 0; border-bottom: 2px solid #2d5a27; margin-bottom: 8px;">${area}（${grouped[area].length}件）</div>
+                        ${grouped[area].map(spot => renderSpotItem(spot, timeLabels)).join('')}
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = spots.map(spot => renderSpotItem(spot, timeLabels)).join('');
+            }
+        }
+
+        function renderSpotItem(spot, timeLabels) {
+            const isHiddenGem = spot.tags && spot.tags.includes('穴場');
+            const displayTags = spot.tags ? spot.tags.filter(t => t !== '穴場') : [];
+            const visited = isVisited(spot.name);
+
+            return `
                 <div class="suggest-item" onclick="selectSpot('${spot.name}', '${spot.purpose}')" ${isHiddenGem ? 'style="border: 2px solid #f57c00; background: #fff8e1;"' : ''}>
                     <div class="suggest-item-name">
                         ${visited ? '<span style="font-size: 0.7rem; background: #4caf50; color: white; padding: 2px 8px; border-radius: 4px; margin-right: 8px;">訪問済</span>' : ''}
@@ -1157,15 +1513,13 @@
                         ${spot.name}
                         ${spot.isUserAdded ? '<span style="font-size: 0.7rem; background: #fff3cd; color: #856404; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">自分で追加</span>' : ''}
                     </div>
-                    <div class="suggest-item-area">${spot.area}</div>
+                    <div class="suggest-item-area">${currentSortOrder !== 'area' ? spot.area + ' ・ ' : ''}${timeLabels[spot.stayTime] || ''}</div>
                     <div class="suggest-item-desc">${spot.desc || '説明なし'}</div>
                     <div class="suggest-item-tags">
                         ${displayTags.length > 0 ? displayTags.map(tag => `<span class="suggest-tag">${tag}</span>`).join('') : ''}
                     </div>
                 </div>
-            `}).join('');
-
-            showScreen('all-spots');
+            `;
         }
     </script>
 </body>

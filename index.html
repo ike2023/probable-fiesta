@@ -777,6 +777,10 @@
                         <span class="time-option-label">半日コース</span>
                         <span class="time-option-desc">午前or午後まるごと</span>
                     </div>
+                    <div class="time-option" onclick="showSuggestions('full')">
+                        <span class="time-option-label">一日コース</span>
+                        <span class="time-option-desc">朝から夕方まで</span>
+                    </div>
                     <div class="time-option" onclick="showSuggestions('all')">
                         <span class="time-option-label">すべて表示</span>
                         <span class="time-option-desc">全スポット一覧</span>
@@ -816,6 +820,7 @@
                             <option value="3h">2〜3時間</option>
                             <option value="4h">3〜4時間</option>
                             <option value="half">半日（4〜5時間）</option>
+                            <option value="full">一日（6時間以上）</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1031,7 +1036,35 @@
             { name: "長浜", area: "長浜市", stayTime: "half", purpose: "街歩き", desc: "黒壁スクエアを中心としたレトロな街並み。ガラス工芸や地元グルメを楽しめる。", tags: ["レトロ", "街歩き", "グルメ"] },
             { name: "近江八幡", area: "近江八幡市", stayTime: "half", purpose: "街歩き", desc: "水郷と商家の街並み。八幡堀の散策やヴォーリズ建築も見どころ。", tags: ["水郷", "街並み", "穴場"] },
             { name: "赤目四十八滝", area: "名張市", stayTime: "half", purpose: "ハイキング", desc: "渓谷沿いに続く滝めぐり。往復約3時間のハイキングコース。", tags: ["滝", "渓谷", "ハイキング"] },
-            { name: "葛城古道", area: "御所市", stayTime: "half", purpose: "ハイキング", desc: "古代豪族の本拠地を歩く古道。高鴨神社、一言主神社など歴史ある神社が点在。", tags: ["古道", "神社", "穴場"] }
+            { name: "葛城古道", area: "御所市", stayTime: "half", purpose: "ハイキング", desc: "古代豪族の本拠地を歩く古道。高鴨神社、一言主神社など歴史ある神社が点在。", tags: ["古道", "神社", "穴場"] },
+
+            // 一日コース（朝から夕方まで：片道1.5〜2時間 + 滞在4〜5時間 or 複数スポット周遊）
+            { name: "姫路城と好古園", area: "姫路市", stayTime: "full", purpose: "歴史散策", desc: "世界遺産の白鷺城をじっくり見学。隣接する日本庭園・好古園も合わせて堪能できる。", tags: ["世界遺産", "城", "庭園"] },
+            { name: "高野山", area: "高野町", stayTime: "full", purpose: "神社・お寺巡り", desc: "真言密教の聖地。奥之院、金剛峯寺、壇上伽藍など見どころ多数。宿坊体験も可能。", tags: ["世界遺産", "寺院", "山岳信仰"] },
+            { name: "彦根城と城下町", area: "彦根市", stayTime: "full", purpose: "歴史散策", desc: "国宝の天守閣と美しい庭園・玄宮園。夢京橋キャッスルロードで食べ歩きも楽しい。", tags: ["国宝", "城", "街歩き"] },
+            { name: "吉野山", area: "吉野町", stayTime: "full", purpose: "ハイキング", desc: "桜の名所として有名。金峯山寺をはじめ多くの寺社が点在。紅葉も美しい。", tags: ["世界遺産", "桜", "ハイキング"] },
+            { name: "熊野三山（那智大社）", area: "那智勝浦町", stayTime: "full", purpose: "神社・お寺巡り", desc: "熊野那智大社と那智の滝。日本一の落差を誇る名瀑は圧巻。青岸渡寺も合わせて参拝。", tags: ["世界遺産", "滝", "パワースポット"] },
+            { name: "天橋立", area: "宮津市", stayTime: "full", purpose: "街歩き", desc: "日本三景の一つ。股のぞきで有名。智恩寺や元伊勢籠神社も合わせて巡れる。", tags: ["日本三景", "自然", "神社"] },
+            { name: "飛鳥周遊", area: "明日香村", stayTime: "full", purpose: "歴史散策", desc: "石舞台古墳、高松塚古墳、飛鳥寺など古代史跡をレンタサイクルで巡る。", tags: ["古墳", "飛鳥", "サイクリング"] },
+            { name: "大和三山めぐり", area: "橿原市", stayTime: "full", purpose: "ハイキング", desc: "畝傍山、耳成山、香久山の三山を一日で制覇。藤原宮跡も合わせて古代ロマンに浸る。", tags: ["低山", "古代", "穴場"] },
+            { name: "伊賀上野", area: "伊賀市", stayTime: "full", purpose: "歴史散策", desc: "忍者の里。伊賀流忍者博物館、上野城、芭蕉翁記念館など。城下町の散策も楽しい。", tags: ["城", "忍者", "街歩き"] },
+            { name: "京都東山めぐり", area: "京都市", stayTime: "full", purpose: "神社・お寺巡り", desc: "清水寺から銀閣寺まで東山の名所を歩く。八坂神社、南禅寺なども巡れる。", tags: ["世界遺産", "寺社", "街歩き"] },
+            { name: "京都嵐山・嵯峨野", area: "京都市", stayTime: "full", purpose: "街歩き", desc: "竹林の道、天龍寺、渡月橋など。奥嵯峨の化野念仏寺まで足を延ばすのもおすすめ。", tags: ["世界遺産", "竹林", "紅葉"] },
+            { name: "琵琶湖一周（西岸）", area: "大津市〜高島市", stayTime: "full", purpose: "街歩き", desc: "坂本の門前町、比叡山麓、マキノのメタセコイア並木など湖西の見どころを巡る。", tags: ["湖", "並木道", "穴場"] },
+            { name: "室生寺と長谷寺", area: "宇陀市・桜井市", stayTime: "full", purpose: "神社・お寺巡り", desc: "「女人高野」室生寺と「花の御寺」長谷寺、二大名刹を一日で巡る贅沢コース。", tags: ["国宝", "寺院", "穴場"] },
+            { name: "五個荘と近江商人の里", area: "東近江市", stayTime: "full", purpose: "街歩き", desc: "近江商人発祥の地。白壁の蔵屋敷と水路が美しい。観光客少なく静かに散策できる。", tags: ["街並み", "歴史", "穴場"] },
+            { name: "信楽と朝宮茶の里", area: "甲賀市", stayTime: "full", purpose: "街歩き", desc: "たぬきの焼き物で有名な信楽。窯元巡りと日本五大銘茶・朝宮茶の茶畑を楽しむ。", tags: ["焼き物", "茶畑", "穴場"] },
+            { name: "曽爾高原とお亀の湯", area: "曽爾村", stayTime: "full", purpose: "ハイキング", desc: "秋のススキで有名な高原。春〜夏も爽やかで気持ちいい。帰りに温泉も楽しめる。", tags: ["高原", "温泉", "穴場"] },
+            { name: "篠山城下町", area: "丹波篠山市", stayTime: "full", purpose: "歴史散策", desc: "丹波の城下町。武家屋敷群と商家の街並み。黒豆や猪肉など丹波グルメも魅力。", tags: ["城下町", "グルメ", "穴場"] },
+            { name: "出石城下町", area: "豊岡市", stayTime: "full", purpose: "街歩き", desc: "「但馬の小京都」と呼ばれる城下町。出石そばの皿そば巡りが楽しい。辰鼓楼は必見。", tags: ["城下町", "そば", "穴場"] },
+            { name: "竹田城跡と生野銀山", area: "朝来市", stayTime: "full", purpose: "歴史散策", desc: "「天空の城」竹田城跡と日本有数の銀山遺跡。坑道見学は夏でも涼しい。", tags: ["城跡", "鉱山", "穴場"] },
+            { name: "御所・葛城の古社めぐり", area: "御所市・葛城市", stayTime: "full", purpose: "神社・お寺巡り", desc: "高鴨神社、一言主神社、葛城一言主神社など古代の神々を祀る社を巡る。観光客極少。", tags: ["神社", "古代", "穴場"] },
+            { name: "宇陀松山の古い街並み", area: "宇陀市", stayTime: "full", purpose: "街歩き", desc: "重伝建の古い街並みと薬の町。森野旧薬園は日本最古の薬草園。又兵衛桜も有名。", tags: ["重伝建", "薬草", "穴場"] },
+            { name: "多武峰と桜井の古代遺跡", area: "桜井市", stayTime: "full", purpose: "歴史散策", desc: "談山神社から山田寺跡、安倍文殊院など古代ロマンあふれるスポットを巡る。", tags: ["神社", "古代", "穴場"] },
+            { name: "柳生の里", area: "奈良市", stayTime: "full", purpose: "歴史散策", desc: "剣豪・柳生一族の里。柳生家老屋敷、正木坂道場跡など。静かな山里の風情が心地よい。", tags: ["剣豪", "山里", "穴場"] },
+            { name: "美山かやぶきの里", area: "南丹市", stayTime: "full", purpose: "街歩き", desc: "茅葺き屋根の集落が残る日本の原風景。観光地化されすぎず、のんびり過ごせる。", tags: ["茅葺き", "里山", "穴場"] },
+            { name: "福知山城と御霊神社", area: "福知山市", stayTime: "full", purpose: "歴史散策", desc: "明智光秀ゆかりの城。城下町散策と丹波の食も楽しめる。観光客は少なめ。", tags: ["城", "光秀", "穴場"] },
+            { name: "三井寺と坂本の門前町", area: "大津市", stayTime: "full", purpose: "神社・お寺巡り", desc: "天台寺門宗の総本山・三井寺と比叡山麓の門前町・坂本。穴太衆積みの石垣が美しい。", tags: ["寺院", "門前町", "穴場"] }
         ];
 
         // 初期化
@@ -1300,6 +1333,7 @@
                 '3h': '2〜3時間',
                 '4h': '3〜4時間',
                 'half': '半日コース',
+                'full': '一日コース',
                 'all': 'すべて'
             };
 
@@ -1404,6 +1438,7 @@
                 '3h': '2〜3時間',
                 '4h': '3〜4時間',
                 'half': '半日コース',
+                'full': '一日コース',
                 'all': 'すべて'
             };
 
@@ -1436,7 +1471,7 @@
 
         function sortSpotsList(spots, order) {
             const sorted = [...spots];
-            const timeOrder = { '2h': 1, '3h': 2, '4h': 3, 'half': 4 };
+            const timeOrder = { '2h': 1, '3h': 2, '4h': 3, 'half': 4, 'full': 5 };
 
             switch (order) {
                 case 'name':
@@ -1479,7 +1514,7 @@
                 return;
             }
 
-            const timeLabels = { '2h': '〜2時間', '3h': '2〜3時間', '4h': '3〜4時間', 'half': '半日' };
+            const timeLabels = { '2h': '〜2時間', '3h': '2〜3時間', '4h': '3〜4時間', 'half': '半日', 'full': '一日' };
 
             // エリア順の場合はグループ化して表示
             if (currentSortOrder === 'area') {

@@ -759,7 +759,7 @@
         <div id="suggest-screen" class="screen">
             <div class="card">
                 <h2>どれくらいの時間がありますか？</h2>
-                <p style="font-size: 0.875rem; color: #666; margin-bottom: 16px;">移動時間も含めた総所要時間で選んでください（枚方市から）</p>
+                <p style="font-size: 0.875rem; color: #666; margin-bottom: 16px;">移動時間も含めた総所要時間で選んでください</p>
                 <div class="time-options">
                     <div class="time-option" onclick="showSuggestions('2h')">
                         <span class="time-option-label">〜2時間</span>
@@ -981,7 +981,7 @@
         let currentTimeCategory = null;
         let currentSuggestions = [];
 
-        // おすすめスポットデータ（枚方市からの総所要時間ベース：移動時間+現地滞在）
+        // おすすめスポットデータ（総所要時間ベース：移動時間+現地滞在）
         const spots = [
             // 〜2時間（近場でさくっと：片道15〜30分 + 滞在1時間程度）
             { name: "百済寺跡", area: "枚方市", stayTime: "2h", purpose: "歴史散策", desc: "奈良時代に建立された寺院跡。礎石が残り、古代の雰囲気を感じられる。", tags: ["史跡", "古代", "穴場"] },
